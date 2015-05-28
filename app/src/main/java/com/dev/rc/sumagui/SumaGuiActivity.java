@@ -1,13 +1,14 @@
 package com.dev.rc.sumagui;
 
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 
@@ -26,11 +27,13 @@ public class SumaGuiActivity extends Activity {
     private Refuerzo refuerzo;
     private Registrador registrador;
     private int color;
+    private Vibrator vibrator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_suma_gui);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         numUno = (TextView) findViewById(R.id.first_num);
         numDos = (TextView) findViewById(R.id.second_num);
         respuesta = (TextView) findViewById(R.id.respuesta);
@@ -42,6 +45,12 @@ public class SumaGuiActivity extends Activity {
         evaluador = new Evaluador();
         refuerzo = new Refuerzo();
         registrador = new Registrador();
+        Typeface type = Typeface.createFromAsset(getAssets(), "fuentes/EraserRegular.ttf");
+        refuerzoText.setTypeface(type);
+        numUno.setTypeface(type);
+        numDos.setTypeface(type);
+        respuesta.setTypeface(type);
+        vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         iniciaSuma();
     }
 
@@ -76,24 +85,30 @@ public class SumaGuiActivity extends Activity {
             respuesta.setText("0");
             respuestaImg.setText("");
             clearCero = true;
+            vibrator.vibrate(300);
         }
         else if(view.getId() == R.id.btn_limpiar){
+            vibrator.vibrate(100);
             respuesta.setText("0");
             respuestaImg.setText("");
             clearCero = true;
         }
         else{
+            Button btn = (Button) view;
+            vibrator.vibrate(50);
             if(clearCero) {
                 respuesta.setText(((Button)view).getText());
                 clearCero = false;
             }
             else{
                 if(respuesta.getText().length() < 2){
-                    respuesta.setText(respuesta.getText().toString() + ((Button)view).getText().toString());
+                    respuesta.setText(respuesta.getText().toString() + ((Button) view).getText().toString());
                 }
             }
             respuestaImg.setText(Figura.getEmoji(Integer.parseInt(respuesta.getText().toString())));
             respuestaImg.setTextColor(color);
+            if(Integer.parseInt(respuesta.getText().toString()) > 10) respuestaImg.setTextSize(20);
+            else respuestaImg.setTextSize(24);
         }
     }
 
@@ -130,11 +145,11 @@ public class SumaGuiActivity extends Activity {
     }
 
     private void refuezoVibrator(boolean bRta) {
-        Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         long[] pattern = {0, 200, 300, 200, 300, 200, 300};
 
         if(vibrator.hasVibrator()){
             if(bRta){
+                vibrator.cancel();
                 vibrator.vibrate(pattern, -1);
             }
             else{

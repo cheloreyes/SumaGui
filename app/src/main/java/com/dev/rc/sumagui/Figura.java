@@ -7,17 +7,16 @@ package com.dev.rc.sumagui;
  * @version 2014
  */
 
-import android.content.Context;
 import android.graphics.Color;
 
 import com.vdurmont.emoji.EmojiParser;
 
-import java.util.Random;
 import java.util.List;
+import java.util.Random;
 
 public class Figura
 {
-    public static final int BOLAS_X_LINEA = 9;
+    public static final int BOLAS_X_LINEA = 6;
     public static final int N_COLORES = 7;
     public static final int N_CARACTERES = 7;
     public static List<String> colores;
@@ -118,8 +117,8 @@ public class Figura
     public static String getEmoji(int n) {
         String strEmoji = "";
         for (int i = 1; i <= n; i++) {
-            strEmoji = strEmoji + emojis;
             if(i % BOLAS_X_LINEA == 0) strEmoji = strEmoji + "\n";
+            strEmoji = strEmoji + emojis;
         }
         return strEmoji;
     }
