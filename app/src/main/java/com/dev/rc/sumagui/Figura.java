@@ -26,6 +26,7 @@ public class Figura
     private static String emojis;
 
 
+
     public Figura()
     {
     }

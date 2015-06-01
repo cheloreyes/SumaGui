@@ -133,7 +133,7 @@ public class SumaGuiActivity extends Activity {
         bRta = evaluador.evalua(n1, n2, rta);
         String[] refuerzoStrNav = refuerzo.getRefuerzo(bRta);
         refuerzoText.setText(refuerzoStrNav[0]);
-        refuerzoAudio(refuerzoStrNav[1]);
+        refuerzoAudio(refuerzoStrNav[ 1]);
         refuezoVibrator(bRta);
         if(bRta){
             iniciaSuma();
